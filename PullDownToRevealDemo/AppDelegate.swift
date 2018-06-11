@@ -15,10 +15,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
+
+        // Simple
+//        bootSimple()
+//        bootSimpleAndNavBar()
+//        bootIGListKit()
+        bootIGListKitAndNavBar()
+
+        return true
+    }
+
+    func bootSimple() {
         let vc = StandardCollectionViewController()
         window!.rootViewController = vc
         window!.makeKeyAndVisible()
-        return true
+    }
+
+    func bootSimpleAndNavBar() {
+        let vc = StandardCollectionViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        window!.rootViewController = nc
+        window!.makeKeyAndVisible()
+    }
+
+    func bootIGListKit() {
+        let vc = IGListKitExampleViewController()
+        window!.rootViewController = vc
+        window!.makeKeyAndVisible()
+    }
+
+    func bootIGListKitAndNavBar() {
+        let vc = IGListKitExampleViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        window!.rootViewController = nc
+        window!.makeKeyAndVisible()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

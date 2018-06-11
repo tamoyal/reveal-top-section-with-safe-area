@@ -8,47 +8,6 @@
 
 import UIKit
 
-import UIKit
-class MyCollectionViewCell: UICollectionViewCell {
-    lazy var myLabel: UILabel = {
-        return UILabel()
-    }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func setupViews() {
-        addSubview(myLabel)
-        myLabel.frame = self.bounds
-    }
-}
-
-class HeaderCell: UICollectionViewCell {
-    lazy var myLabel: UILabel = {
-        return UILabel()
-    }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func setupViews() {
-        addSubview(myLabel)
-        myLabel.frame = self.bounds
-    }
-}
-
 class StandardCollectionViewController: UIViewController {
     let cellID = "cellID"
     let headerCellID = "headerCellID"
@@ -80,14 +39,14 @@ class StandardCollectionViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.backgroundColor = UIColor.gray
         collectionView.contentInsetAdjustmentBehavior = .automatic
-        collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView.register(DataCell.self, forCellWithReuseIdentifier: cellID)
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: headerCellID)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(view.safeAreaInsets)
-        collectionView.contentInset.top = -revealSectionHeight - view.safeAreaInsets.top
+        print("view.safeAreaInsets.top:", view.safeAreaInsets.top)
+        collectionView.contentInset.top = -revealSectionHeight
         collectionView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
     }
 }
@@ -112,7 +71,7 @@ extension StandardCollectionViewController: UICollectionViewDataSource {
             cell.myLabel.text = "HEADER CELL"
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! MyCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! DataCell
             cell.backgroundColor = UIColor.blue
             cell.myLabel.text = "\(indexPath.section):\(indexPath.row)"
             return cell
@@ -139,10 +98,9 @@ extension StandardCollectionViewController: UICollectionViewDelegate {
         print("contentSize:", scrollView.contentSize)
 
         // Reveal if we hit threshold
-        let revealedInset = -view.safeAreaInsets.top
-        if scrollView.contentOffset.y < -10 && scrollView.contentInset.top != revealedInset {
+        if scrollView.contentOffset.y < -10 && scrollView.contentInset.top != 0 {
             UIView.animate(withDuration: 0.25) {
-                scrollView.contentInset.top = revealedInset
+                scrollView.contentInset.top = 0
             }
         }
     }
